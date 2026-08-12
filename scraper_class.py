@@ -51,11 +51,5 @@ class Scraper:
             writer.writerows(self.all_headlines)
 
 
-scraper = Scraper()
-scraper.scrape_xml("https://feeds.bbci.co.uk/news/rss.xml", "BBC")
-scraper.scrape_xml("http://rss.cnn.com/rss/cnn_topstories.rss", "CNN")
-scraper.scrape_hacker_news("https://news.ycombinator.com")
 
-print(len(scraper.get_all_headlines()))
-scraper.save_to_csv("all_headlines.csv")
 
