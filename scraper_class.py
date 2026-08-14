@@ -1,11 +1,17 @@
 import csv
 import requests
 from bs4 import BeautifulSoup
+import time
 class Scraper:
     def __init__(self):
         self.all_headlines = []
-    def scrape_hacker_news(self,url ,  news_outlet="Hacker News"):
-        response = requests.get(url)
+    def scrape_hacker_news(self, url ,  news_outlet="Hacker News"):
+        
+        try:
+            response = requests.get(url, timeout=10)
+        except requests.exceptions.RequestException as e:
+            print(f"Failed to fetch {url}: {e}")
+            return []
         soup = BeautifulSoup(response.text, "html.parser")
         items = soup.find_all("span", class_="titleline")
         html_headlines = []
@@ -25,7 +31,11 @@ class Scraper:
             
         
     def scrape_xml(self, url, news_outlet):
-        response = requests.get(url)
+        try:
+            response = requests.get(url, timeout=10)
+        except requests.exceptions.RequestException as e:
+            print(f"Failed to fetch {url}: {e}")
+            return []
         soup = BeautifulSoup(response.text, "xml")
         items = soup.find_all("item")
         xml_headlines = []
@@ -51,5 +61,14 @@ class Scraper:
             writer.writerows(self.all_headlines)
 
 
+scraper = Scraper()
+scraper.scrape_xml("https://feeds.bbci.co.uk/news/rss.xml", "BBC")
+time.sleep(1)
+scraper.scrape_xml("http://rss.cnn.com/rss/cnn_topstories.rss", "CNN")
+time.sleep(1)
+scraper.scrape_hacker_news("https://news.ycombinator.com")
+
+print(len(scraper.get_all_headlines()))
+scraper.save_to_csv("all_headlines.csv")
 
 
