@@ -27,6 +27,6 @@ with open("jobs.csv", "w", newline="", encoding="utf-8") as f:
     writer.writerows(jobs_listed)
 
 df = pd.read_csv("jobs.csv")
-print(df["Job title"].value_counts().all())
+print(df["Job title"].value_counts())
 print(df["Company"].value_counts())
 print(df["Location"].value_counts())
