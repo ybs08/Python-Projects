@@ -30,4 +30,5 @@ with open("quotes.csv", "w", newline="", encoding="utf-8") as f:
     writer.writerows(all_quotes)
 
 
+
     
